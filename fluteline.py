@@ -12,7 +12,7 @@ except ImportError:
 
 class _TerminationMessage(object):
     '''
-    Send me to a node input to stop it.
+    Send an instance to a node input to stop it.
     '''
     pass
 
@@ -87,7 +87,7 @@ class Node(threading.Thread):
         '''
         Stop the node gracefully.
         '''
-        self._input.put(_TerminationMessage)
+        self._input.put(_TerminationMessage())
 
     def run(self):
         self.enter()
@@ -95,7 +95,7 @@ class Node(threading.Thread):
             while True:
                 if not self._input.empty():
                     item = self._input.get()
-                    if item is _TerminationMessage:
+                    if isinstance(item, _TerminationMessage):
                         break
                     self.consume(item)
                     self._input.task_done()
