@@ -9,3 +9,12 @@ Installation
 .. code-block:: bash
 
     pip install fluteline
+
+Links
+-----
+
+* Documentation: https://fluteline.readthedocs.io/en/latest/index.html
+* Source code: https://github.com/Nagasaki45/fluteline
+* PyPI releases: https://pypi.org/project/fluteline
+* License: `MIT <https://github.com/Nagasaki45/fluteline/blob/master/LICENSE>`_
+* Test status: https://travis-ci.org/Nagasaki45/fluteline
