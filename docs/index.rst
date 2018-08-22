@@ -11,5 +11,6 @@ Content
 .. toctree::
    :maxdepth: 2
 
+   why.rst
    example.rst
    api.rst
