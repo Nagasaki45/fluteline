@@ -1,3 +1,4 @@
+import time
 import unittest
 
 from fluteline import _TerminationMessage
@@ -19,7 +20,8 @@ class TestProducer(unittest.TestCase):
 
     def test_cascade_reaches_the_output(self):
         self.producer.stop(cascade=True)
-        while True:
+        start = time.time()
+        while time.time() - start < 1:  # 1 second timeout
             item = self.producer._output.get()
             if isinstance(item, _TerminationMessage):
                 self.assertTrue(item.cascade)
