@@ -2,6 +2,8 @@ __pycache__
 *.pyc
 .eggs
 fluteline.egg-info
+build
+dist
 
 # Sphinx documentation
 docs/_build/
