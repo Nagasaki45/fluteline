@@ -19,28 +19,25 @@ class _TerminationMessage(object):
 
 class Node(threading.Thread):
     '''
-    A node is either a consumer or producer in a pipeline.
+    A node is either a producer, consumer or consumer-producer in a pipeline.
 
-    ## Hooks
+    Hooks
+        Inherit and override ``generate`` to create a producer and ``consume``
+        to create a consumer or consumer-producer. Setup resources when
+        starting in ``enter`` and clean after yourself in ``exit``.
 
-    Inherit and override `generate` to create a producer and `consume`
-    to create a consumer or consumer-producer. Setup resources when
-    starting in `enter` and clean after yourself in `exit`.
+    Outputting values
+        Your ``generate`` or ``consume`` functions can output values with
+        ``self.put(new_value)``.
 
-    ## Outputting values
+    Connect, start, and stop
+        First, connect the node to a destination with ``connect(other_node)``,
+        then call ``start``. Don't forget to call ``stop``. Otherwise the
+        thread will stay alive.
 
-    Your `generate` or `consume` functions can output values with
-    `self.put(new_value)`.
-
-    ## Connect, start, and stop
-
-    First, connect the node to a destination with `connect(other_node)`,
-    then call `start`. Call `stop` when you want to finish.
-
-    ## Notes
-
-    See also the utility functions `connect`, `start`, and `stop` to
-    manage complete pipelines.
+    Notes
+        Use the utility functions ``connect``, ``start``, and ``stop`` to
+        manage complete pipelines.
     '''
     def __init__(self):
         super(Node, self).__init__()
