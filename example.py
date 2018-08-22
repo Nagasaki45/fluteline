@@ -4,13 +4,13 @@ import time
 import fluteline
 
 
-class RandomNumberGenerator(fluteline.Node):
-    def generate(self):
+class RandomNumberGenerator(fluteline.Producer):
+    def produce(self):
         number = random.random()
         self.put(number)
 
 
-class Max(fluteline.Node):
+class Max(fluteline.Consumer):
     def enter(self):
         self.max_ = None
 
@@ -20,7 +20,7 @@ class Max(fluteline.Node):
             self.max_ = item
 
 
-class Printer(fluteline.Node):
+class Printer(fluteline.Consumer):
     def consume(self, item):
         print(item)
 

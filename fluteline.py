@@ -1,4 +1,6 @@
+import abc
 import threading
+import warnings
 
 try:
     import queue  # python 3
@@ -18,42 +20,38 @@ class _TerminationMessage(object):
 
 class Node(threading.Thread):
     '''
-    A node is either a producer, consumer or consumer-producer in a pipeline.
+    An abstract base class for producers, consumers, or consumer-producers
+    in a pipeline.
 
     Hooks
-        Inherit and override ``generate`` to create a producer and ``consume``
-        to create a consumer or consumer-producer. Setup resources when
-        starting in ``enter`` and clean after yourself in ``exit``.
+        Setup resources when starting in ``enter`` and clean after yourself
+        in ``exit``.
 
     Outputting values
-        Your ``generate`` or ``consume`` functions can output values with
+        Send messages to the next node in the pipeline with
         ``self.put(new_value)``.
 
     Connect, start, and stop
         First, connect the node to a destination with ``connect(other_node)``,
         then call ``start``. Don't forget to call ``stop``. Otherwise the
         thread will stay alive.
-
-    Notes
-        Use the utility functions ``connect``, ``start``, and ``stop`` to
-        manage complete pipelines.
     '''
+    __metaclass__ = abc.ABCMeta
+
     def __init__(self):
         super(Node, self).__init__()
         self._input = queue.Queue()
         self._output = queue.Queue()  # In case nothing is connected
+        self._stopping = False
 
-    def generate(self):
+    def consume(self, msg):
         '''
-        Override to create producers.
-        '''
-        pass
+        Override if your node should react to incoming message, whether it's
+        a consumer, consumer-producer, or just a producer.
 
-    def consume(self, item):
+        :param msg: An incoming messages to process.
         '''
-        Override to create a consumer or consumer-producer.
-        '''
-        pass
+        warnings.warn('A message arrived to a node with no `consume` implementation')
 
     def enter(self):
         '''
@@ -73,11 +71,11 @@ class Node(threading.Thread):
         '''
         self._output = other_node._input
 
-    def put(self, item):
+    def put(self, msg):
         '''
-        Output an item.
+        Send a message to the next node in the pipeline.
         '''
-        self._output.put(item)
+        self._output.put(msg)
 
     def stop(self, cascade=False):
         '''
@@ -91,18 +89,50 @@ class Node(threading.Thread):
     def run(self):
         self.enter()
         try:
-            while True:
-                if not self._input.empty():
-                    item = self._input.get()
-                    if isinstance(item, _TerminationMessage):
-                        if item.cascade == True:
-                            self.put(item)
-                        break
-                    self.consume(item)
-                    self._input.task_done()
-                self.generate()
+            while not self._stopping:
+                self._loop()
         finally:
             self.exit()
+
+    @abc.abstractmethod
+    def _loop(self):
+        pass
+
+    def _process_input(self):
+        msg = self._input.get()
+        if isinstance(msg, _TerminationMessage):
+            self._stopping = True
+            if msg.cascade == True:
+                self.put(msg)
+        else:
+            self.consume(msg)
+        self._input.task_done()
+
+
+class Producer(Node):
+    '''
+    Inherit this class to create a producer.
+    '''
+    def produce(self):
+        '''
+        Override to produce new messages.
+        '''
+        pass
+
+    def _loop(self):
+        if self._input.empty():
+            self.produce()
+        else:
+            self._process_input()
+
+
+
+class Consumer(Node):
+    '''
+    Inherit this class to create a consumer or consumer-producer.
+    '''
+    def _loop(self):
+        self._process_input()
 
 
 def connect(nodes):
