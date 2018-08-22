@@ -70,7 +70,7 @@ class Node(threading.Thread):
 
     def connect(self, other_node):
         '''
-        Connect the output of this node to `other_node`'s input
+        Connect the output of this node to ``other_node``'s input.
         '''
         self._output = other_node._input
 
