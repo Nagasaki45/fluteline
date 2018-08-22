@@ -8,9 +8,12 @@ except ImportError:
 
 class _TerminationMessage(object):
     '''
-    Send an instance to a node input to stop it.
+    Send an instance to a node input to stop it. A cascading
+    termination message will stream through the pipeline to the
+    following nodes.
     '''
-    pass
+    def __init__(self, cascade):
+        self.cascade = cascade
 
 
 class Node(threading.Thread):
@@ -76,11 +79,14 @@ class Node(threading.Thread):
         '''
         self._output.put(item)
 
-    def stop(self):
+    def stop(self, cascade=False):
         '''
         Stop the node gracefully.
+
+        :param bool cascade: Cascade the stopping message to the following
+            nodes.
         '''
-        self._input.put(_TerminationMessage())
+        self._input.put(_TerminationMessage(cascade))
 
     def run(self):
         self.enter()
@@ -89,6 +95,8 @@ class Node(threading.Thread):
                 if not self._input.empty():
                     item = self._input.get()
                     if isinstance(item, _TerminationMessage):
+                        if item.cascade == True:
+                            self.put(item)
                         break
                     self.consume(item)
                     self._input.task_done()

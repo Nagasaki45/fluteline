@@ -1,5 +1,6 @@
 import unittest
 
+from fluteline import _TerminationMessage
 from .basic_nodes import Producer, Consumer
 
 
@@ -15,6 +16,16 @@ class TestProducer(unittest.TestCase):
     def test_producer(self):
         item = self.producer._output.get()
         self.assertEqual(item, 1)
+
+    def test_cascade_reaches_the_output(self):
+        self.producer.stop(cascade=True)
+        while True:
+            item = self.producer._output.get()
+            if isinstance(item, _TerminationMessage):
+                self.assertTrue(item.cascade)
+                break
+        else:
+            raise AssertionError('No termination message in output')
 
 
 class TestPipeline(unittest.TestCase):
