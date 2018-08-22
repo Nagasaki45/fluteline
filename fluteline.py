@@ -75,7 +75,7 @@ class Node(threading.Thread):
 
     def put(self, item):
         '''
-        Output and item.
+        Output an item.
         '''
         self._output.put(item)
 
