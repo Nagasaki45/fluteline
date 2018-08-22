@@ -1,7 +1,7 @@
-fluteline - easy thread based pipelines
-=======================================
+fluteline - easy pipelines
+==========================
 
-Easy to use pipelines of producers, consumers, and consumer-producers, in pure python (2 and 3) and with no dependencies.
+Easy to use thread based pipelines of producers, consumers, and consumer-producers, in pure python (2 and 3) and with no dependencies.
 
 Installation
 ------------
