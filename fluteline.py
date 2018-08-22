@@ -1,7 +1,3 @@
-'''
-Easy thread based pipelines.
-'''
-
 import threading
 
 try:
