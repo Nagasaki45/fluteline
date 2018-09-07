@@ -13,7 +13,7 @@ Installation
 Links
 -----
 
-* Documentation: https://fluteline.readthedocs.io/en/latest/index.html
+* Documentation: https://fluteline.readthedocs.io/en/latest
 * Source code: https://github.com/Nagasaki45/fluteline
 * PyPI releases: https://pypi.org/project/fluteline
 * License: `MIT <https://github.com/Nagasaki45/fluteline/blob/master/LICENSE>`_
