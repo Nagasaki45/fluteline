@@ -6,3 +6,6 @@ python:
   - '3.6'
 script:
   - python setup.py test
+  - python setup.py install
+  - python examples/pipeline.py
+  - python examples/with_queues.py
