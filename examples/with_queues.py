@@ -3,7 +3,7 @@ import fluteline
 
 class DeepThought(fluteline.Consumer):
     def consume(self, item):
-            self.put(42)
+        self.put(42)
 
 
 deep_thought = DeepThought()
