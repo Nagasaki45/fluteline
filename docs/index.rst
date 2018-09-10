@@ -13,4 +13,5 @@ Content
 
    why.rst
    example.rst
+   not_ready_to_commit.rst
    api.rst
