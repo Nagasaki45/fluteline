@@ -38,8 +38,8 @@ class Node(threading.Thread):
 
     def __init__(self):
         super(Node, self).__init__()
-        self._input = queue.Queue()
-        self._output = queue.Queue()  # In case nothing is connected
+        self.input = Queue()
+        self.output = Queue()  # In case nothing is connected
         self._stopping = False
 
     def consume(self, msg):
@@ -67,19 +67,19 @@ class Node(threading.Thread):
         '''
         Connect the output of this node to ``other_node``'s input.
         '''
-        self._output = other_node._input
+        self.output = other_node.input
 
     def put(self, msg):
         '''
         Send a message to the next node in the pipeline.
         '''
-        self._output.put(msg)
+        self.output.put(msg)
 
     def stop(self):
         '''
         Stop the node gracefully.
         '''
-        self._input.put(_TerminationMessage())
+        self.input.put(_TerminationMessage())
 
     def run(self):
         self.enter()
@@ -94,12 +94,11 @@ class Node(threading.Thread):
         pass
 
     def _process_input(self):
-        msg = self._input.get()
+        msg = self.input.get()
         if isinstance(msg, _TerminationMessage):
             self._stopping = True
         else:
             self.consume(msg)
-        self._input.task_done()
 
 
 class Producer(Node):
@@ -113,7 +112,7 @@ class Producer(Node):
         pass
 
     def _loop(self):
-        if self._input.empty():
+        if self.input.empty():
             self.produce()
         else:
             self._process_input()
@@ -171,3 +170,30 @@ class Logger(Consumer):
     def consume(self, msg):
         self.logger.info(msg)
         self.put(msg)
+
+
+class Queue(object):
+    '''
+    Thread-safe input and output queue from nodes.
+    '''
+    def __init__(self):
+        self._queue = queue.Queue()
+
+    def empty(self):
+        '''
+        Return ``True`` if the queue is empty, ``False`` otherwise
+        (not reliable!).
+        '''
+        return self._queue.empty()
+
+    def put(self, item):
+        '''
+        Put an item into the queue.
+        '''
+        return self._queue.put(item)
+
+    def get(self):
+        '''
+        Remove and return an item from the queue.
+        '''
+        return self._queue.get()

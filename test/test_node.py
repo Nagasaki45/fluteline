@@ -14,7 +14,7 @@ class TestProducer(unittest.TestCase):
         self.producer.stop()
 
     def test_producer(self):
-        item = self.producer._output.get()
+        item = self.producer.output.get()
         self.assertEqual(item, 1)
 
 
@@ -32,7 +32,7 @@ class TestPipeline(unittest.TestCase):
         self.consumer.stop()
 
     def test_pipeline(self):
-        item = self.consumer._output.get()
+        item = self.consumer.output.get()
         self.assertEqual(item, 2)
 
 

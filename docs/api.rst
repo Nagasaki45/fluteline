@@ -5,9 +5,17 @@ API reference
    :members: Node, Producer, Consumer
    :exclude-members: run
 
+
 Utilities
 ---------
 
 .. automodule:: fluteline
-   :exclude-members: Node, Producer, Consumer, consume
+   :members: Logger, connect, start, stop
+   :exclude-members: consume
+
+
+Queues
+------
+
+.. autoclass:: fluteline.Queue
    :members:

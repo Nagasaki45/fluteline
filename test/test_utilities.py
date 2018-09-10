@@ -20,8 +20,8 @@ class TestUtilities(unittest.TestCase):
         n3 = Consumer()
         nodes = [n1, n2, n3]
         fluteline.connect(nodes)
-        self.assertEqual(n1._output, n2._input)
-        self.assertEqual(n2._output, n3._input)
+        self.assertEqual(n1.output, n2.input)
+        self.assertEqual(n2.output, n3.input)
 
     def test_logger(self):
         mock_logger = MockLogger()
@@ -29,13 +29,13 @@ class TestUtilities(unittest.TestCase):
         logger = fluteline.Logger(mock_logger)
         logger.start()
 
-        logger._input.put('hello')
-        logger._input.put('world')
+        logger.input.put('hello')
+        logger.input.put('world')
 
         expected = ['hello', 'world']
 
         for output in expected:
-            self.assertEqual(logger._output.get(), output)
+            self.assertEqual(logger.output.get(), output)
 
         logger.stop()
 
