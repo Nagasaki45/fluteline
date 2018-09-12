@@ -10,7 +10,7 @@ Utilities
 ---------
 
 .. automodule:: fluteline
-   :members: Logger, connect, start, stop
+   :members: connect, start, stop
    :exclude-members: consume
 
 

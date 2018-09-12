@@ -1,5 +1,3 @@
-import logging
-
 from . import nodes
 
 
@@ -25,24 +23,3 @@ def stop(nodes):
     '''
     for node in nodes:
         node.stop()
-
-
-class Logger(nodes.Consumer):
-    '''
-    A utility consumer-producer that logs messages.
-    '''
-    def __init__(self, logger=None):
-        '''
-        :param logger: Provide your own logger or get a new
-                       ``fluteline`` logger. Logging level is
-                       ``logging.INFO``.
-        '''
-        super(Logger, self).__init__()
-        if logger is None:
-            logger = logging.getLogger(__name__)
-        self.logger = logger
-
-
-    def consume(self, msg):
-        self.logger.info(msg)
-        self.put(msg)
