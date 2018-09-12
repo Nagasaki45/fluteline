@@ -1,0 +1,25 @@
+{
+    "_meta": {
+        "hash": {
+            "sha256": "052bba011773e5a6f339492a79e28f4c01b6043e60eb4203a0bf55f17419ca01"
+        },
+        "pipfile-spec": 6,
+        "requires": {
+            "python_version": "3.7"
+        },
+        "sources": [
+            {
+                "name": "pypi",
+                "url": "https://pypi.org/simple",
+                "verify_ssl": true
+            }
+        ]
+    },
+    "default": {
+        "fluteline": {
+            "editable": true,
+            "path": "."
+        }
+    },
+    "develop": {}
+}
