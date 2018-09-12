@@ -1,12 +1,8 @@
 import abc
-import logging
 import threading
 import warnings
 
-try:
-    import queue  # python 3
-except ImportError:
-    import Queue as queue
+from . import queue
 
 
 class _TerminationMessage(object):
@@ -38,8 +34,8 @@ class Node(threading.Thread):
 
     def __init__(self):
         super(Node, self).__init__()
-        self.input = Queue()
-        self.output = Queue()  # In case nothing is connected
+        self.input = queue.Queue()
+        self.output = queue.Queue()  # In case nothing is connected
         self._stopping = False
 
     def consume(self, msg):
@@ -118,82 +114,9 @@ class Producer(Node):
             self._process_input()
 
 
-
 class Consumer(Node):
     '''
     Inherit this class to create a consumer or consumer-producer.
     '''
     def _loop(self):
         self._process_input()
-
-
-def connect(nodes):
-    '''
-    Connect a list of nodes.
-    '''
-    for a, b in zip(nodes[:-1], nodes[1:]):
-        a.connect(b)
-
-
-def start(nodes):
-    '''
-    Start multiple nodes.
-    '''
-    for node in nodes:
-        node.start()
-
-
-def stop(nodes):
-    '''
-    Stop multiple nodes.
-    '''
-    for node in nodes:
-        node.stop()
-
-
-class Logger(Consumer):
-    '''
-    A utility consumer-producer that logs messages.
-    '''
-    def __init__(self, logger=None):
-        '''
-        :param logger: Provide your own logger or get a new
-                       ``fluteline`` logger. Logging level is
-                       ``logging.INFO``.
-        '''
-        super(Logger, self).__init__()
-        if logger is None:
-            logger = logging.getLogger(__name__)
-        self.logger = logger
-
-
-    def consume(self, msg):
-        self.logger.info(msg)
-        self.put(msg)
-
-
-class Queue(object):
-    '''
-    Thread-safe input and output queue from nodes.
-    '''
-    def __init__(self):
-        self._queue = queue.Queue()
-
-    def empty(self):
-        '''
-        Return ``True`` if the queue is empty, ``False`` otherwise
-        (not reliable!).
-        '''
-        return self._queue.empty()
-
-    def put(self, item):
-        '''
-        Put an item into the queue.
-        '''
-        return self._queue.put(item)
-
-    def get(self):
-        '''
-        Remove and return an item from the queue.
-        '''
-        return self._queue.get()
