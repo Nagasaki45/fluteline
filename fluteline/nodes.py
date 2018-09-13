@@ -2,7 +2,7 @@ import abc
 import threading
 import warnings
 
-from . import queue
+from . import queues
 
 
 class _TerminationMessage(object):
@@ -29,7 +29,7 @@ class Node(threading.Thread):
 
     def __init__(self):
         super(Node, self).__init__()
-        self.input = queue.Queue()
+        self.input = queues.Queue()
         self._stopping = False
 
     def consume(self, msg):

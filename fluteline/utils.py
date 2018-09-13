@@ -1,5 +1,5 @@
 from . import nodes
-from . import queue
+from . import queues
 
 
 def connect(nodes):
@@ -12,7 +12,7 @@ def connect(nodes):
     '''
     for a, b in zip(nodes[:-1], nodes[1:]):
         a.output = b
-    b.output = queue.Queue()
+    b.output = queues.Queue()
 
 
 def start(nodes):
