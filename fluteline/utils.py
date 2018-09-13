@@ -7,7 +7,7 @@ def connect(nodes):
     Connect a list of nodes.
 
     Connected nodes have an ``output`` member which is the following node in
-    the line. The last node's ``output`` is a :class:`fluteline.Queue` for
+    the line. The last node's ``output`` is a :class:`Queue` for
     easy plumbing.
     '''
     for a, b in zip(nodes[:-1], nodes[1:]):
