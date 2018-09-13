@@ -1,6 +1,7 @@
 import time
 import unittest
 
+import fluteline
 from .basic_nodes import Producer, Consumer
 
 
@@ -8,6 +9,7 @@ class TestProducer(unittest.TestCase):
 
     def setUp(self):
         self.producer = Producer()
+        self.producer.output = fluteline.Queue()
         self.producer.start()
 
     def tearDown(self):
@@ -23,7 +25,8 @@ class TestPipeline(unittest.TestCase):
     def setUp(self):
         self.producer = Producer()
         self.consumer = Consumer()
-        self.producer.connect(self.consumer)
+        self.consumer.output = fluteline.Queue()
+        self.producer.output = self.consumer
         self.producer.start()
         self.consumer.start()
 

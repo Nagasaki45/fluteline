@@ -12,5 +12,6 @@ class TestUtilities(unittest.TestCase):
         n3 = Consumer()
         nodes = [n1, n2, n3]
         fluteline.connect(nodes)
-        self.assertEqual(n1.output, n2.input)
-        self.assertEqual(n2.output, n3.input)
+        self.assertEqual(n1.output, n2)
+        self.assertEqual(n2.output, n3)
+        self.assertIsInstance(n3.output, fluteline.Queue)

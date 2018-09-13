@@ -21,21 +21,15 @@ class Node(threading.Thread):
         Setup resources when starting in ``enter`` and clean after yourself
         in ``exit``.
 
-    Outputting values
-        Send messages to the next node in the pipeline with
-        ``self.put(new_value)``.
-
-    Connect, start, and stop
-        First, connect the node to a destination with ``connect(other_node)``,
-        then call ``start``. Don't forget to call ``stop``. Otherwise the
-        thread will stay alive.
+    Start and stop
+        Call ``start`` to spin up the node. Don't forget to call ``stop``.
+        Otherwise the thread will stay alive.
     '''
     __metaclass__ = abc.ABCMeta
 
     def __init__(self):
         super(Node, self).__init__()
         self.input = queue.Queue()
-        self.output = queue.Queue()  # In case nothing is connected
         self._stopping = False
 
     def consume(self, msg):
@@ -59,23 +53,17 @@ class Node(threading.Thread):
         '''
         pass
 
-    def connect(self, other_node):
-        '''
-        Connect the output of this node to ``other_node``'s input.
-        '''
-        self.output = other_node.input
-
     def put(self, msg):
         '''
-        Send a message to the next node in the pipeline.
+        Send a message to this node.
         '''
-        self.output.put(msg)
+        self.input.put(msg)
 
     def stop(self):
         '''
         Stop the node gracefully.
         '''
-        self.input.put(_TerminationMessage())
+        self.put(_TerminationMessage())
 
     def run(self):
         self.enter()

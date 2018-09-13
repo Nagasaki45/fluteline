@@ -7,7 +7,7 @@ import fluteline
 class RandomNumberGenerator(fluteline.Producer):
     def produce(self):
         number = random.random()
-        self.put(number)
+        self.output.put(number)
 
 
 class Max(fluteline.Consumer):
@@ -16,7 +16,7 @@ class Max(fluteline.Consumer):
 
     def consume(self, item):
         if self.max_ is None or item > self.max_:
-            self.put(item)
+            self.output.put(item)
             self.max_ = item
 
 

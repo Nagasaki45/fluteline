@@ -3,10 +3,13 @@ import fluteline
 
 class DeepThought(fluteline.Consumer):
     def consume(self, item):
-        self.put(42)
+        self.output.put(42)
 
 
 deep_thought = DeepThought()
+# We are talking low level here, so let's attach an output queue manually.
+# It's easier to use fluteline.connect though. Check it out!
+deep_thought.output = fluteline.Queue()
 deep_thought.start()
 
 # Put something in the input queue

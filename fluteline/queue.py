@@ -6,7 +6,7 @@ except ImportError:
 
 class Queue(object):
     '''
-    Thread-safe input and output queue from nodes.
+    Thread-safe queue for nodes communication.
     '''
     def __init__(self):
         self._queue = queue.Queue()
