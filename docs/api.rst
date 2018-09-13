@@ -13,6 +13,9 @@ Nodes
 .. autoclass:: fluteline.Consumer
    :members: consume, put
 
+.. autoclass:: fluteline.SynchronousConsumer
+   :exclude-members:
+
 
 Utilities
 ---------

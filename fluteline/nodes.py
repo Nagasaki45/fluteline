@@ -111,8 +111,23 @@ class Consumer(_Threaded, Node):
             self.consume(msg)
 
 
+class SynchronousConsumer(Node):
     '''
+    Same API as :class:`Consumer` but... synchronous!
+
+    - Execution happen the in thread that calls the ``put`` method.
+    - ``enter`` and ``exit`` are called when calling ``start`` and ``stop``.
+    - There's no input queue.
+    - It's lighter on resources and usually faster.
     '''
+    def start(self):
+        self.enter()
 
+    def stop(self):
+        self.exit()
 
+    def consume(self, msg):
+        pass
 
+    def put(self, msg):
+        self.consume(msg)
