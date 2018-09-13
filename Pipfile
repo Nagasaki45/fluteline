@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 fluteline = {editable = true, path = "."}
+bumpversion = "*"
 
 [dev-packages]
 
