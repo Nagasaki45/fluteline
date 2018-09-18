@@ -6,7 +6,7 @@ Easy to use thread based pipelines of producers, consumers, and consumer-produce
 Installation
 ------------
 
-.. code-block:: bash
+::
 
     pip install fluteline
 
@@ -16,5 +16,7 @@ Links
 * Documentation: https://fluteline.readthedocs.io/en/latest
 * Source code: https://github.com/Nagasaki45/fluteline
 * PyPI releases: https://pypi.org/project/fluteline
-* License: `MIT <https://github.com/Nagasaki45/fluteline/blob/master/LICENSE>`_
+* License: `MIT`_
 * Test status: https://travis-ci.org/Nagasaki45/fluteline
+
+.. _MIT: https://github.com/Nagasaki45/fluteline/blob/master/LICENSE
