@@ -17,6 +17,6 @@ Links
 * Source code: https://github.com/Nagasaki45/fluteline
 * PyPI releases: https://pypi.org/project/fluteline
 * License: `MIT`_
-* Test status: https://travis-ci.org/Nagasaki45/fluteline
+* Test status: https://travis-ci.com/Nagasaki45/fluteline
 
 .. _MIT: https://github.com/Nagasaki45/fluteline/blob/master/LICENSE
